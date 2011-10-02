@@ -5,6 +5,7 @@ Requirements
 ------------
 - node.js
 - socket.io
+- nomnom
 
 Aims
 ----
@@ -19,4 +20,4 @@ TODO
 - add a manifest file so that it can work offline if data is in localStorage
 - use jQuery from Google CDN with local fallback
 - add a fallback display for browsers that don't have the <progress> element
-- add a timestamp to the localStorage cache so that it can be invalidated
+- invalidate localStorage based on timestamp

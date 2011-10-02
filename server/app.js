@@ -1,4 +1,12 @@
-var http = require('http'),
+var options = require('nomnom')
+        .opts({
+            key: {
+                abbr: 'k', full: 'api-key',
+                type: 'string', required: true,
+                help: 'A Last.fm API key'
+            }
+        }).parseArgs(),
+    http = require('http'),
     app = http.createServer(),
     io = require('socket.io').listen(app);
 
@@ -13,8 +21,7 @@ io.sockets.on('connection', function(socket) {
 
 var lastfm = {};
 
-// TODO: change API_KEY to come from a command line argument
-lastfm.API_KEY = 'c0dfd33cb0df0fd8773a8e180b9c84c1';
+lastfm.API_KEY = options.key;
 lastfm.OPTIONS = {
     host: 'ws.audioscrobbler.com',
     port: 80,
