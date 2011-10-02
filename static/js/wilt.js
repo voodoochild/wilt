@@ -5,11 +5,13 @@ wilt = (function() {
      * Initialise.
      */
     var init = function() {
+        // Bind functions to run when data load is complete.
         $('body').bind('wilt.loaded', function() {
             // show_form_controls();
             show_artists_list(artists);
         });
         
+        // Load artists data.
         load_artists();
     };
     
@@ -36,6 +38,12 @@ wilt = (function() {
      * Request artists data from node server.
      */
     var get_json_from_node = function() {
+        // Make sure socket.io is available.
+        if ('undefined' === typeof io) {
+            flash("Oops, it looks like the server isn't running.");
+            return;
+        }
+        
         var total = received = 0;
         artists = [];
         
@@ -111,7 +119,6 @@ wilt = (function() {
             results = $('<table>\
               <thead>\
                 <tr>\
-                  <th></th>\
                   <th class="artist">Artist</th>\
                   <th class="plays">Plays</th>\
                 </tr>\
@@ -124,21 +131,85 @@ wilt = (function() {
         
         var i, markup = '',
             template = '<tr>\
-              <td>{{rank}}</td>\
-              <td><a href="{{url}}">{{name}}</a></td>\
-              <td>{{plays}}</td>\
+              <td class="name"><a href="{{url}}">{{name}}</a></td>\
+              <td class="plays">{{plays}}</td>\
             </tr>';
+        
         for (i = 0; i < data.length; i++) {
             if (null !== data[i] && 'undefined' !== typeof data[i]) {
-                data[i]['rank'] = i;
                 markup += Mustache.to_html(template, data[i]);
             }
         }
         results.find('tbody').html(markup);
     };
     
+    /**
+     * Send flash message to the user.
+     */
+    var flash = function(message) {
+        console.log(message);
+    };
+    
+    /**
+     * Filter dataset by number of plays, between min/max.
+     */
+    var filter_by_plays = function(min, max) {
+        min = min || 0;
+        max = max || parseInt(artists[1].plays);
+        
+        var i, artist, data = [];
+        for (i = 1; i < artists.length; i++) {
+            artist = artists[i]
+            if (null !== artist && 'undefined' !== typeof artist) {
+                if (artist.plays >= min && artist.plays <= max) {
+                    data.push(artist);
+                }
+                else if (artist.plays < min) {
+                    break;
+                }
+            }
+        }
+        
+        show_artists_list(data);
+    };
+    
+    /**
+     * Filter dataset by text search.
+     */
+    var filter_by_search = function(term) {
+        var re = new RegExp(term.replace('*', '.?'), ['i','g']),
+            i, artist, data = [];
+        
+        for (i = 1; i < artists.length; i++) {
+            artist = artists[i]
+            if (null !== artist && 'undefined' !== typeof artist) {
+                if (re.test(artist.name)) {
+                    data.push(artist);
+                }
+            }
+        }
+        
+        show_artists_list(data);
+    };
+    
+    /**
+     * Sort displayed data alphabetically.
+     */
+    var sort_abc = function(direction) {
+        // stub
+    };
+    
+    /**
+     * Sort displayed data by number of plays.
+     */
+    var sort_plays = function(direction) {
+        // stub
+    };
+    
     return {
-        init: init
+        init: init,
+        filter_by_plays: filter_by_plays,
+        filter_by_search: filter_by_search
     };
 }());
 

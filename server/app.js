@@ -14,7 +14,7 @@ io.sockets.on('connection', function(socket) {
 var lastfm = {};
 
 // TODO: change API_KEY to come from a command line argument
-lastfm.API_KEY = '<key goes here>';
+lastfm.API_KEY = 'c0dfd33cb0df0fd8773a8e180b9c84c1';
 lastfm.OPTIONS = {
     host: 'ws.audioscrobbler.com',
     port: 80,
