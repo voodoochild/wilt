@@ -2,11 +2,14 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>What I listen to—</title>
+  <title>{% block title %}What I listen to—{% endblock title %}</title>
+  {% block css %}
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Coustard:400,900" media="screen">
+  <link rel="stylesheet" href="static/css/normalize.css" media="all">
   <link rel="stylesheet" href="static/css/wilt.css" media="all">
+  {% endblock css %}
 </head>
-<body>
+<body{% if name %} data-lastfmuser="{{ name }}"{% endif %}>
   <header role="banner">
     <h1>What I listen to—</h1>
   </header>
@@ -14,18 +17,20 @@
   <section role="main">
     <noscript>
       <p>Sorry, you're not going to get too far without javascript. Have a nice day!</p>
-    </noscript>    
+    </noscript>
+    {% block content %}{% endblock content %}
   </section>
   
-  <footer role="contentinfo">
-    <p><a href="https://github.com/voodoochild/wilt">Fork me on Github</a></p>
-  </footer>
+  <a class="fork-me" href="http://github.com/voodoochild/wilt">
+    <img src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+  </a>
   
+  {% block javascript %}
   <script src="//localhost:3000/socket.io/socket.io.js"></script>
-  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>-->
   <script src="static/js/jquery-1.6.2.min.js"></script>
   <script src="static/js/mustache-0.4.0-dev.js"></script>
   <script src="static/js/modernizr-2.0.6.js"></script>
   <script src="static/js/wilt.js"></script>
+  {% endblock javascript %}
 </body>
 </html>

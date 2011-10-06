@@ -1,10 +1,13 @@
 wilt = (function() {
-    var artists, progress, results;
+    var lastfmuser, artists, progress, results;
     
     /**
      * Initialise.
      */
-    var init = function() {
+    var init = function(username) {
+        // Store the Last.fm user whose data we want to get.
+        lastfmuser = username;
+        
         // Bind functions to run when data load is complete.
         $('body').bind('wilt.loaded', function() {
             // show_form_controls();
@@ -16,12 +19,19 @@ wilt = (function() {
     };
     
     /**
+     * Send flash message to the user.
+     */
+    var flash = function(message) {
+        console.log(message);
+    };
+    
+    /**
      * Load artists data.
      */
     var load_artists = function() {
         // Load cached data from localStorage, if it exists.
         if (Modernizr.localstorage) {
-            var json = localStorage.getItem('wilt.daelen.artists');
+            var json = localStorage.getItem('wilt.' + lastfmuser + '.artists');
             if (null !== json) {
                 // TODO: add timestamp checking here
                 artists = JSON.parse(json).data;
@@ -49,7 +59,7 @@ wilt = (function() {
         
         // Connect to app.js and supply a username.
         var socket = io.connect('http://localhost:3000');
-        socket.emit('wilt user', { user: 'daelen' });
+        socket.emit('wilt user', { user: lastfmuser });
         show_progress();
         
         // Store the total number of artists.
@@ -77,7 +87,7 @@ wilt = (function() {
      */
     var cache_json = function() {
         if (Modernizr.localstorage) {
-            localStorage.setItem('wilt.daelen.artists',
+            localStorage.setItem('wilt.' + lastfmuser + '.artists',
                 JSON.stringify({
                     timestamp: new Date().getTime(),
                     data: artists
@@ -144,13 +154,6 @@ wilt = (function() {
     };
     
     /**
-     * Send flash message to the user.
-     */
-    var flash = function(message) {
-        console.log(message);
-    };
-    
-    /**
      * Filter dataset by number of plays, between min/max.
      */
     var filter_by_plays = function(min, max) {
@@ -177,7 +180,7 @@ wilt = (function() {
      * Filter dataset by text search.
      */
     var filter_by_search = function(term) {
-        var re = new RegExp(term.replace('*', '.?'), ['i','g']),
+        var re = new RegExp(term, 'i'),
             i, artist, data = [];
         
         for (i = 1; i < artists.length; i++) {
@@ -214,5 +217,9 @@ wilt = (function() {
 }());
 
 $(document).ready(function() {
-    wilt.init();
+    // Look to see if a username is set.
+    var name = $('body').attr('data-lastfmuser');
+    if (name && '' !== name) {
+        wilt.init(name);
+    }
 });
