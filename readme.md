@@ -27,14 +27,12 @@ Credits
 
 TODO
 ----
-- add form so that Last.fm username isn't hardcoded
 - add per-request caching to app.js
 - add a manifest file so that it can work offline if data is in localStorage
 - use jQuery from Google CDN with local fallback
 - add a fallback display for browsers that don't have the <progress> element
 - invalidate localStorage based on timestamp
 - could form controls actually be on some kind of static toolbar?
-- use flask to serve up homepage and /{user}
 - make sure that it's possible to view by a specific playcount instead of a range
 - display the total number of results for each filter
 - display the username of the person whose data you're working on

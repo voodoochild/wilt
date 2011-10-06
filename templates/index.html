@@ -1,36 +1,32 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}What I listen to—{% endblock title %}</title>
-  {% block css %}
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Coustard:400,900" media="screen">
-  <link rel="stylesheet" href="static/css/normalize.css" media="all">
-  <link rel="stylesheet" href="static/css/wilt.css" media="all">
-  {% endblock css %}
-</head>
-<body{% if name %} data-lastfmuser="{{ name }}"{% endif %}>
-  <header role="banner">
-    <h1>What I listen to—</h1>
-  </header>
+{% extends 'base.html' %}
+
+{% block body_attrs %}
+{% if lastfmuser %}data-lastfmuser="{{ lastfmuser }}"{% endif %}
+{% endblock body_attrs %}
+
+{% block content %}
+<section role="main"{% if lastfmuser %} class="scrollbox"{% endif %}>
+  {% if not lastfmuser %}
+  <p class="intro">Hello you! Stick your <a class="lastfm" href="http://last.fm"><img src="http://cdn.last.fm/flatness/badges/lastfm_red_small.gif" alt="Last.fm"></a> username in below and I'll grab a list of every artist you've ever listened to.</p>
+  <form class="no-labels" action="/" method="POST">
+    <label for="lastfmuser">Last.fm username</label>
+    <input type="text" name="lastfmuser" id="lastfmuser">
+    <input type="submit">
+  </form>
+  {% endif %}
   
-  <section role="main">
-    <noscript>
-      <p>Sorry, you're not going to get too far without javascript. Have a nice day!</p>
-    </noscript>
-    {% block content %}{% endblock content %}
-  </section>
-  
-  <a class="fork-me" href="http://github.com/voodoochild/wilt">
-    <img src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
-  </a>
-  
-  {% block javascript %}
-  <script src="//localhost:3000/socket.io/socket.io.js"></script>
-  <script src="static/js/jquery-1.6.2.min.js"></script>
-  <script src="static/js/mustache-0.4.0-dev.js"></script>
-  <script src="static/js/modernizr-2.0.6.js"></script>
-  <script src="static/js/wilt.js"></script>
-  {% endblock javascript %}
-</body>
-</html>
+  <noscript>
+    <p>Sorry, you're not going to get too far without javascript. Have a nice day!</p>
+  </noscript>
+</section>
+
+<a class="fork-me" href="http://github.com/voodoochild/wilt">
+  <img src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+</a>
+{% endblock content %}
+
+{% block javascript %}
+{{ super() }}
+<script src="static/js/mustache-0.4.0-dev.js"></script>
+<script src="static/js/wilt.js"></script>
+{% endblock javascript %}

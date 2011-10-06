@@ -14,13 +14,18 @@ body {
     width: 40em;
 }
 
-[role="main"] {
+[role="main"].scrollbox {
     height: 30em;
     overflow-y: scroll;
 }
 
 h1 {
     font: 400 4em/1 Coustard, Georgia, serif;
+}
+
+p.intro {
+    font-size: 28px;
+    line-height: 2;
 }
 
 a, a:active, a:visited {
@@ -31,6 +36,14 @@ a, a:active, a:visited {
 
 a:hover {
     background-color: #a5d16f;
+}
+
+a.lastfm:hover {
+    background: none;
+}
+
+a.lastfm img {
+    margin-bottom: -4px;
 }
 
 table {
@@ -51,6 +64,18 @@ td {
     padding: 0;
     position: fixed;
     right: 0; top: 0;
+}
+
+/** Forms */
+
+.no-labels label {
+    position: absolute;
+    left: -9999px;
+}
+
+input {
+    font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+    
 }
 
 /** Scroll bars */

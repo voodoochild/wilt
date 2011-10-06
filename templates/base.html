@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}What I listen to—{% endblock title %}</title>
+  {% block css %}
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Coustard:400,900" media="screen">
+  <link rel="stylesheet" href="static/css/normalize.css" media="all">
+  <link rel="stylesheet" href="static/css/wilt.css" media="all">
+  {% endblock css %}
+</head>
+<body {% block body_attrs %}{% endblock body_attrs %}>
+  <header role="banner">
+    <h1>What I listen to—</h1>
+  </header>
+  {% block content %}{% endblock content %}
+  {% block javascript %}
+  <script src="//localhost:3000/socket.io/socket.io.js"></script>
+  <script src="static/js/jquery-1.6.2.min.js"></script>
+  <script src="static/js/modernizr-2.0.6.js"></script>
+  {% endblock javascript %}
+</body>
+</html>
