@@ -147,6 +147,7 @@ wilt = (function() {
         
         for (i = 0; i < data.length; i++) {
             if (null !== data[i] && 'undefined' !== typeof data[i]) {
+                data[i].plays = format_thousands(parseInt(data[i].plays));
                 markup += Mustache.to_html(template, data[i]);
             }
         }
@@ -207,6 +208,25 @@ wilt = (function() {
      */
     var sort_plays = function(direction) {
         // stub
+    };
+    
+    /**
+     * Ghetto thousands formatting. Won't work if the number
+     * gets higher than 999,999.
+     */
+    var format_thousands = function(number) {
+        if (999 < number) {
+            var thousands = Math.floor(number/1000),
+                hundreds  = number % 1000;
+            
+            while (hundreds.toString().length < 3) {
+                hundreds = '0' + hundreds;
+            }
+            
+            return thousands + ',' + hundreds;
+        }
+        
+        return number;
     };
     
     return {
